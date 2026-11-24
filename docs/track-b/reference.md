@@ -2,6 +2,7 @@
 title: 参考 · Reference
 outline: [2, 3]
 editLink: false
+pageClass: track-b-page
 ---
 
 <!-- 本页由 scripts/gen-track-b.mjs 根据 data/llms-snapshot.txt 与 data/llms-zh-cn-snapshot.txt 生成，请勿手改。 -->

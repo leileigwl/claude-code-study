@@ -71,3 +71,10 @@
   .track-grid, .home-points { grid-template-columns: 1fr; }
   .VPHome .VPHero .name { font-size: 44px; }
 }
+
+/* ===== B 路线表格：A 路线 / 状态两列不折行 ===== */
+.vp-doc .status-tag { white-space: nowrap; }
+.track-b-page .vp-doc table th:nth-child(3), .track-b-page .vp-doc table td:nth-child(3),
+.track-b-page .vp-doc table th:nth-child(4), .track-b-page .vp-doc table td:nth-child(4) { white-space: nowrap; }
+.track-b-page .vp-doc table td:nth-child(1) { min-width: 170px; }
+.track-b-page .vp-doc table td:nth-child(2) { min-width: 260px; }
