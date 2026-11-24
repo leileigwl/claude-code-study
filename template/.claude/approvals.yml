@@ -1,0 +1,19 @@
+# Claude Approvals 策略（第 9、10 章）。官方入门策略 “Keep two people on each change”，observe 模式。
+# ⚠️ 前提：Claude 组织为 Team/Enterprise + usage credits + 安装了 Claude GitHub App。observe 模式也计费。
+# ⚠️ 单人仓库不要改成 enforce：官方要求强制前有两名有写权限的人；只有你一个人时，这条策略下任何 PR 都过不了。
+# 合并到默认分支后才生效；先单独开一个 PR 只加本文件。
+version: 1
+mode: observe
+rules:
+  - purpose: "A change takes two people."
+    paths: ["**"]
+    verdict: { claude: comments, seats: 2 }
+    advisory: [claude/code_review]
+  - purpose: "A change to the review rules takes two people."
+    paths: ["**/.claude/**"]
+    nested: inherit
+    verdict: { claude: comments, seats: 2 }
+  - purpose: "CI, git hooks and agent instructions decide what every later change must pass."
+    paths: [".github/**", ".githooks/**", ".husky/**", "CLAUDE.md", "AGENTS.md", ".mcp.json"]
+    nested: inherit
+    verdict: { claude: comments, seats: 2 }

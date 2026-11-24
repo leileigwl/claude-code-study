@@ -1,0 +1,4 @@
+# 知行快刷：新 worktree 里需要的本地环境文件（都被 .gitignore 忽略，所以会被复制）
+backend/.env
+frontend/.env.development
+frontend/.env.local

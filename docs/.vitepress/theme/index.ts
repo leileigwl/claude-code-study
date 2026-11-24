@@ -13,6 +13,7 @@ import HookLifecycleAnim from './components/HookLifecycleAnim.vue'
 import SubagentFanoutAnim from './components/SubagentFanoutAnim.vue'
 import ClaudeShipFlowAnim from './components/ClaudeShipFlowAnim.vue'
 import ShipWatchAnim from './components/ShipWatchAnim.vue'
+import RepoGatesAnim from './components/RepoGatesAnim.vue'
 
 export default {
   extends: DefaultTheme,
@@ -28,5 +29,6 @@ export default {
     app.component('SubagentFanoutAnim', SubagentFanoutAnim)
     app.component('ClaudeShipFlowAnim', ClaudeShipFlowAnim)
     app.component('ShipWatchAnim', ShipWatchAnim)
+    app.component('RepoGatesAnim', RepoGatesAnim)
   }
 } satisfies Theme

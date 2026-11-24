@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm lint *)",
+      "Bash(pnpm typecheck *)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm test:coverage *)",
+      "Bash(pnpm check:all *)",
+      "Bash(pnpm exec vitest run *)",
+      "Bash(pnpm exec eslint *)",
+      "Bash(pnpm --dir frontend lint *)",
+      "Bash(pnpm --dir frontend typecheck *)",
+      "Bash(pnpm --dir frontend test *)",
+      "Bash(pnpm --dir frontend check:all *)",
+      "Bash(uv run ruff check *)",
+      "Bash(uv run pytest *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "mcp__claude-code-docs__*"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm add *)",
+      "Bash(pnpm remove *)",
+      "Bash(uv add *)",
+      "Bash(uv remove *)",
+      "Bash(uv sync *)",
+      "Bash(docker *)",
+      "Bash(docker-compose *)",
+      "mcp__playwright__*"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(!.env.example)",
+      "Read(./secrets/**)",
+      "Edit(./.githooks/**)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard *)",
+      "Bash(git * --no-verify*)",
+      "Bash(git config core.hooksPath *)",
+      "Read(./backend/data/**)",
+      "Edit(./backend/data/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/protect-files.mjs"
+            ],
+            "onFailure": "block",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/lint-edited.mjs"
+            ],
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/verify-before-stop.mjs"
+            ],
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/compact-reminder.mjs",
+              "${CLAUDE_PROJECT_DIR}/.claude/compact-reminder.md"
+            ],
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

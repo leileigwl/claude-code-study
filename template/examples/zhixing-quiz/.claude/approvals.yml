@@ -1,0 +1,22 @@
+# 知行快刷：只在你把组织升级到 Team/Enterprise、并有第二位有写权限的协作者之后才考虑。
+# 现在（单人、公开仓库、个人套餐）不要提交本文件：Claude Approvals 不可用；即使可用，observe 也计费，
+# enforce 在单人仓库里会让 .claude/ 改动（以及本策略下的所有改动）永远等不到第二个人。
+version: 1
+mode: observe
+rules:
+  - purpose: "A change takes two people."
+    paths: ["**"]
+    verdict: { claude: comments, seats: 2 }
+    advisory: [claude/code_review]
+  - purpose: "A change to the review rules takes two people."
+    paths: ["**/.claude/**"]
+    nested: inherit
+    verdict: { claude: comments, seats: 2 }
+  - purpose: "CI, git hooks, lockfiles and agent instructions decide what every later change must pass."
+    paths: [".github/**", ".githooks/**", "scripts/setup-git-hooks.sh", "AGENTS.md", "CLAUDE.md", ".mcp.json", "frontend/pnpm-lock.yaml", "backend/uv.lock"]
+    nested: inherit
+    verdict: { claude: comments, seats: 2 }
+  - purpose: "Auth, quota and billing code needs a second person even when Claude's review passes."
+    paths: ["backend/app/core/auth.py", "backend/app/core/security.py", "backend/app/core/rate_limit.py", "backend/app/services/email_otp_service.py"]
+    nested: inherit
+    verdict: { claude: comments, seats: 2 }

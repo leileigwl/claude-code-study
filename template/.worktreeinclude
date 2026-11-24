@@ -1,0 +1,6 @@
+# 第 4 章：新建 worktree 时，把这些“被 gitignore 的”本地文件复制进去（gitignore 语法）。
+# 只有“既匹配这里、又被 .gitignore 忽略”的文件才会被复制，已跟踪的文件不会重复复制。
+.env
+.env.local
+frontend/.env.local
+backend/.env

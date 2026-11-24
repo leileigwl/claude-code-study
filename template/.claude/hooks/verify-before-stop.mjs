@@ -4,16 +4,16 @@
 //           （CLAUDE_CODE_STOP_HOOK_BLOCK_CAP 可调）。
 // 依据：hooks.md「Stop」「Exit code 2 behavior per event」；best-practices.md「Enforce the check with a Stop hook」
 // 在 worktree 里也对：用输入 JSON 的 cwd（跟随 Claude），而不是 ${CLAUDE_PROJECT_DIR}（不跟随 worktree）。
-// 按仓库调整：改 CHECKS。when 匹配“改动文件的仓库相对路径”，命中才跑对应命令。
-import { readFileSync } from 'node:fs'
+// 按仓库调整：在 .claude/hooks/checks.json 里写检查（没有该文件时用下面的默认值）。
+//   格式：[{ "when": "<正则，匹配改动文件的仓库相对路径>", "cmd": "<在仓库根运行的命令>" }]
+//   checks.json 在 .claude/hooks/ 下，protect-files.mjs 不让 AI 改它：AI 不能自己放松门禁。
+import { readFileSync, existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
 
-const CHECKS = [
-  { when: /\.(js|mjs|cjs|ts|tsx|jsx|vue|css|scss|json)$/, cmd: 'npm run lint --silent' },
-  { when: /\.(js|mjs|cjs|ts|tsx|jsx|vue)$/, cmd: 'npm test --silent' }
-  // 知行快刷（pnpm + uv 的前后端分目录仓库）换成：
-  // { when: /^frontend\//, cmd: 'pnpm --dir frontend check:all' },
-  // { when: /^backend\//,  cmd: 'cd backend && uv run ruff check app tests && uv run pytest -q' }
+const DEFAULT_CHECKS = [
+  { when: '\\.(js|mjs|cjs|ts|tsx|jsx|vue|css|scss)$', cmd: 'npm run lint --silent' },
+  { when: '\\.(js|mjs|cjs|ts|tsx|jsx|vue)$', cmd: 'npm test --silent' }
 ]
 
 const input = JSON.parse(readFileSync(0, 'utf8') || '{}')
@@ -27,8 +27,12 @@ const changed = sh('git status --porcelain --untracked-files=all', top).stdout
   .split('\n').filter(Boolean).map((l) => l.slice(3).replace(/^.* -> /, '').replace(/^"|"$/g, ''))
 if (changed.length === 0) process.exit(0) // 纯问答、没改文件：不检查
 
+const cfg = resolve(top, '.claude/hooks/checks.json')
+const CHECKS = existsSync(cfg) ? JSON.parse(readFileSync(cfg, 'utf8')) : DEFAULT_CHECKS
+
 for (const { when, cmd } of CHECKS) {
-  if (!changed.some((f) => when.test(f))) continue
+  const re = new RegExp(when)
+  if (!changed.some((f) => re.test(f))) continue
   const r = sh(cmd, top)
   if (r.status !== 0) {
     process.stderr.write(`“${cmd}” 未通过，修好再结束（若确实无法修复，说明原因并停下来问用户）：\n${((r.stdout || '') + (r.stderr || '')).slice(-4000)}`)

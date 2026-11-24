@@ -1,0 +1,92 @@
+[
+  {
+    "id": "a10-q1",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "官方怎么描述 CLAUDE.md 与 settings 权限规则的区别？",
+    "options": ["两者都是硬性限制", "CLAUDE.md 是硬性限制，settings 只是建议", "settings 规则由客户端强制执行；CLAUDE.md 影响 Claude 的行为，但不是硬性强制层", "取决于权限模式"],
+    "answer": 2,
+    "explanation": "Settings rules are enforced by the client regardless of what Claude decides to do. CLAUDE.md instructions shape Claude's behavior but are not a hard enforcement layer.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a10-q2",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "/ship 的 watch 在 Claude 自主行动时推送提交，仓库的 git hooks（husky、.githooks）会运行吗？",
+    "options": ["会，和平常一样", "不会：它用 git -c core.hooksPath=/dev/null 的形式，git hooks 不运行", "只运行 pre-push", "只在 auto 模式下运行"],
+    "answer": 1,
+    "explanation": "During a watch… it writes its git fetches, merges, commits, and pushes in the form git -c core.hooksPath=/dev/null push. 仓库 hooks 目录里的 git hooks 在这些轮次里不运行，所以 CI 必须是 required check。",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a10-q3",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "在 settings 里 deny Bash(git push *) 对 /ship 有什么影响？",
+    "options": ["没有影响", "/ship 把提交推送留给你，并且不启动 watch", "只禁止强推", "watch 照常，但每次推送前询问"],
+    "answer": 1,
+    "explanation": "官方表格：deny rule such as Bash(git push *) → For /ship's own commit and push: /ship leaves those steps to you；During a watch: No watch starts。ask Bash(git push *) 则不影响 watch。",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a10-q4",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "只有你一个有写权限的人时，能强制（enforce）Claude Approvals 的入门策略吗？",
+    "options": ["可以，作者占一个 seat 就够", "官方前置条件要求强制前有两名有写权限的人；只有一人时 .claude/ 下的改动等情况永远过不了，‘两人’策略下任何改动都过不了", "可以，Claude 会代替第二个人批准", "只要是公开仓库就可以"],
+    "answer": 1,
+    "explanation": "Two people with write access, before you enforce either policy on this page. With only one, the check can't pass on a change under .claude/, or where Claude's review fails or gives no result.",
+    "source_url": "https://code.claude.com/docs/en/approvals-setup.md"
+  },
+  {
+    "id": "a10-q5",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "以下哪个目录**不在** Claude Code 内置的受保护路径里，需要自己用 deny 规则或 hook 保护？",
+    "options": [".git", ".husky", ".githooks", ".claude"],
+    "answer": 2,
+    "explanation": "内置受保护目录包括 .git、.husky、.claude、.vscode 等；用 core.hooksPath 指向的 .githooks 不在列表里，acceptEdits 下可被直接修改。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a10-q6",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "Claude 进入 worktree 后，hook 里的 ${CLAUDE_PROJECT_DIR} 指向哪里？",
+    "options": ["当前 worktree 根目录", "会话启动时的项目根目录（不跟随 worktree）；要 worktree 路径应读输入 JSON 的 cwd", "用户 home 目录", "未定义"],
+    "answer": 1,
+    "explanation": "${CLAUDE_PROJECT_DIR} stays put… cwd follows Claude: the cwd field in the hook's input JSON is the worktree root. 所以模板按文件所在仓库根计算相对路径。",
+    "source_url": "https://code.claude.com/docs/en/worktrees.md"
+  },
+  {
+    "id": "a10-q7",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "知行快刷是公开仓库。你有未提交的改动，直接在默认分支上运行 /ship 会怎样？",
+    "options": ["自动新建分支、提交并开 PR", "公开仓库里 /ship 不替你提交未提交的改动，需要你先在非默认分支上自己提交", "报错退出且删除改动", "提交到 main"],
+    "answer": 1,
+    "explanation": "The repository is public: if you're on a branch other than the default branch and it has commits of its own, /ship pushes those… Otherwise, commit your work on a branch other than the default branch, then run /ship again.",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a10-q8",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "本地 /code-review 读取 REVIEW.md 吗？",
+    "options": ["读，和托管 Code Review 一样", "不读：它遵循 CLAUDE.md；REVIEW.md 只配置托管的 Code Review 服务", "只在 --fix 时读", "只读子目录里的 REVIEW.md"],
+    "answer": 1,
+    "explanation": "Instructions: the review follows your CLAUDE.md… It doesn't read REVIEW.md. That file configures the managed Code Review service on GitHub pull requests.",
+    "source_url": "https://code.claude.com/docs/en/code-review-local.md"
+  },
+  {
+    "id": "a10-q9",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "在 deny 列表里写 Read(.env.*) 之后紧跟 Read(!.env.example)，效果是？",
+    "options": ["两条互相抵消，什么都不拦", "拦住任意深度的 .env.* 文件，但 .env.example 例外", "只拦根目录的 .env.example", "! 规则在 deny 里无效"],
+    "answer": 1,
+    "explanation": "不带路径的文件名按 gitignore 语义匹配任意深度；deny/ask 里以 ! 开头的规则是 gitignore 取反，从同一文件里写在它前面的 path 规则中挖掉匹配的路径。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a10-q10",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "单人仓库在 GitHub 分支保护里把“需要的批准数”设为 1，会发生什么？",
+    "options": ["Claude 会自动批准", "你自己也合并不了：GitHub 不允许 PR 作者批准自己的 PR，应设为 0（只要求走 PR）", "没有区别", "CI 不再运行"],
+    "answer": 1,
+    "explanation": "这是 GitHub 的规则（非 Claude Code）：作者不能批准自己的 PR。单人仓库用 required status checks + 0 个必需批准，合并仍由你本人点。",
+    "source_url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches"
+  }
+]

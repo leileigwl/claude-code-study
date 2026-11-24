@@ -1,0 +1,10 @@
+[
+  {
+    "when": "^frontend/",
+    "cmd": "pnpm --dir frontend check:all"
+  },
+  {
+    "when": "^backend/",
+    "cmd": "cd backend && uv run ruff check app tests && uv run pytest -q"
+  }
+]

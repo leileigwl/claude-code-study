@@ -1,0 +1,10 @@
+# —— 追加到你仓库的 .gitignore ——
+# 个人的 Claude Code 文件（不提交）
+CLAUDE.local.md
+.claude/settings.local.json
+# claude --worktree 创建的工作树
+.claude/worktrees/
+# 本地密钥（.env.example 要提交）
+.env
+.env.*
+!.env.example
