@@ -11,7 +11,7 @@ import quiz from '../../quizzes/09-claude-ship.json'
 
 <div class="one-liner">
 
-**一句话讲明白**：**Claude Ship**（2026-11-23 上线）是团队版的三个 GitHub agent——Code Review 找问题、PR Steward 推修复、Claude Approvals 按策略报告还缺谁批准；**合不合并永远由 GitHub 分支规则和人决定**。个人仓库用本地的 `/code-review`、`/ship`、`/steward` 得到类似流程。
+**一句话讲明白**：**Claude Ship** 是团队版的三个 GitHub agent——Code Review 找问题、PR Steward 推修复、Claude Approvals 按策略报告还缺谁批准；**合不合并永远由 GitHub 分支规则和人决定**。个人仓库用本地的 `/code-review`、`/ship`、`/steward` 得到类似流程。
 
 </div>
 
