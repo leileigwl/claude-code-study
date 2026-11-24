@@ -1,0 +1,41 @@
+name: Sync official docs
+
+# 每周一 01:00 UTC（北京时间 09:00）比对 https://code.claude.com/docs/llms.txt 与仓库快照；
+# 有新增 / 删除 / 改动时开一个 issue（已有未关闭的同步 issue 时改为追加评论）。
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Compare live index with snapshot
+        id: sync
+        run: node scripts/sync-docs.mjs
+
+      - name: Open or update issue
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="官方文档有更新：$(date -u +%Y-%m-%d)"
+          LABEL="docs-sync"
+          gh label create "$LABEL" --color 1d76db --description "官方文档同步" 2>/dev/null || true
+          OPEN=$(gh issue list --label "$LABEL" --state open --json number --jq '.[0].number')
+          if [ -n "$OPEN" ]; then
+            gh issue comment "$OPEN" --body-file data/sync-report.md
+          else
+            gh issue create --title "$TITLE" --label "$LABEL" --body-file data/sync-report.md
+          fi

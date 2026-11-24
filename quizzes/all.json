@@ -1,0 +1,1080 @@
+[
+  {
+    "id": "a01-q1",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "官方把 Claude Code 的 agentic loop 分成哪三个阶段？",
+    "options": [
+      "规划、编码、提交",
+      "收集上下文、采取行动、验证结果",
+      "读取、思考、回答",
+      "探索、计划、执行"
+    ],
+    "answer": 1,
+    "explanation": "原文：it works through three phases: gather context, take action, and verify results. 三个阶段会交织在一起，并在需要时反复循环。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a01-q2",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "长会话里你早期在对话中口头交代的一条规则，压缩（compaction）之后最可能怎样？",
+    "options": [
+      "被原样保留",
+      "只以摘要的形式留下，细节可能丢失",
+      "被自动写进 CLAUDE.md",
+      "被转成 hook 继续强制执行"
+    ],
+    "answer": 1,
+    "explanation": "官方：摘要保留你的请求和关键代码片段，但 detailed instructions from early in the conversation may be lost。持久规则应写进 CLAUDE.md。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a01-q3",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "下列哪一项在压缩后会从磁盘重新注入（re-injected from disk）？",
+    "options": [
+      "带 paths: 前缀的规则",
+      "子目录中的 CLAUDE.md",
+      "项目根目录的 CLAUDE.md 和不带 paths 的规则",
+      "hooks 早先加进来的上下文"
+    ],
+    "answer": 2,
+    "explanation": "What survives compaction 表：Project-root CLAUDE.md and unscoped rules → Re-injected from disk；paths 规则和嵌套 CLAUDE.md 按需重新加载；hooks 早先加的上下文随对话一起被摘要。",
+    "source_url": "https://code.claude.com/docs/en/context-window.md"
+  },
+  {
+    "id": "a01-q4",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "压缩后 Claude Code 会自动重新读回最多几个最近修改过的文件？",
+    "options": [
+      "1 个",
+      "3 个",
+      "5 个",
+      "全部"
+    ],
+    "answer": 2,
+    "explanation": "Claude Code re-reads up to five of the files Claude has read or edited, choosing the ones modified most recently；超过 5,000 tokens 的文件只以路径引用（Referenced file）回来。",
+    "source_url": "https://code.claude.com/docs/en/context-window.md"
+  },
+  {
+    "id": "a01-q5",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "想控制压缩时保留什么，官方给的两种办法是？",
+    "options": [
+      "在 CLAUDE.md 加 \"Compact Instructions\" 小节，或运行带重点的 /compact",
+      "把 /clear 改名",
+      "关闭 auto memory",
+      "改用 bypassPermissions 模式"
+    ],
+    "answer": 0,
+    "explanation": "原文：add a \"Compact Instructions\" section to CLAUDE.md or run /compact with a focus (like /compact focus on the API changes)。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a01-q6",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "看到 “Autocompact is thrashing” 报错，下列哪种做法不在官方给的恢复步骤里？",
+    "options": [
+      "让 Claude 分块读取超大文件",
+      "运行带重点的 /compact 丢掉大输出",
+      "把大文件工作交给子代理",
+      "把 autoCompactWindow 调到 0"
+    ],
+    "answer": 3,
+    "explanation": "官方恢复步骤：分块读、带重点 /compact、交给 subagent、不再需要旧对话就 /clear。没有“调到 0”这一条（/autocompact 命令和 --autocompact 参数只接受 100K tokens 及以上）。",
+    "source_url": "https://code.claude.com/docs/en/troubleshooting.md"
+  },
+  {
+    "id": "a01-q7",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "Claude 正在运行工具时，你直接输入一句纠正并回车，会发生什么？",
+    "options": [
+      "当前会话被清空",
+      "消息排队，Claude 在当前工具调用结束后、同一轮内读到并调整",
+      "必须等整轮结束才会读到",
+      "消息被丢弃"
+    ],
+    "answer": 1,
+    "explanation": "原文：The message shows as queued... it reads the message as soon as those calls finish, within the same turn, and adjusts before its next step。按 Esc 则会立即停止并取消正在运行的工具调用。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a02-q1",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "官方建议每个 CLAUDE.md 文件控制在多少行以内？",
+    "options": [
+      "50 行",
+      "200 行",
+      "500 行",
+      "没有建议"
+    ],
+    "answer": 1,
+    "explanation": "Size: target under 200 lines per CLAUDE.md file. Longer files consume more context and reduce adherence.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q2",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "在 foo/bar/ 启动 Claude Code，foo/CLAUDE.md 和 foo/bar/CLAUDE.md 的关系是？",
+    "options": [
+      "foo/bar 的覆盖 foo 的",
+      "只加载 foo/bar 的",
+      "两者拼接，foo 的在前，foo/bar 的在后",
+      "只加载 foo 的"
+    ],
+    "answer": 2,
+    "explanation": "All discovered files are concatenated into context rather than overriding each other… foo/CLAUDE.md appears in context before foo/bar/CLAUDE.md。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q3",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "用 @path 导入的文件会不会减少上下文占用？",
+    "options": [
+      "会，导入的文件按需加载",
+      "不会，导入的文件和引用它的 CLAUDE.md 一起加载",
+      "只有绝对路径才会减少",
+      "只有在 rules 目录里才会减少"
+    ],
+    "answer": 1,
+    "explanation": "Imports help you organize a long file but don't reduce its context cost, because imported files load together with the CLAUDE.md that imports them. 要按需加载，用带 paths 的 rules 或 skills。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q4",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": ".claude/rules/ 里的规则文件，frontmatter 中 Claude Code 唯一读取的字段是？",
+    "options": [
+      "name",
+      "description",
+      "paths",
+      "priority"
+    ],
+    "answer": 2,
+    "explanation": "paths is the only field Claude Code reads from a rule; any other field is ignored without an error.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q5",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "仓库里同时有 AGENTS.md 和 CLAUDE.md（默认设置），Claude 读哪个？",
+    "options": [
+      "两个都读",
+      "只读 AGENTS.md",
+      "只读 CLAUDE.md",
+      "随机"
+    ],
+    "answer": 2,
+    "explanation": "默认值 claude-md-or-agents-md：有 CLAUDE.md 或 CLAUDE.local.md 时只读 CLAUDE.md。要两者都读，把 Project instructions 设为 claude-md-and-agents-md，或在 CLAUDE.md 里写 @AGENTS.md。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q6",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "auto memory 存在哪里、会不会跨机器同步？",
+    "options": [
+      "项目里的 .claude/memory/，随 git 同步",
+      "~/.claude/projects/<project>/memory/，只在本机",
+      "云端账户，所有设备同步",
+      "CLAUDE.local.md"
+    ],
+    "answer": 1,
+    "explanation": "Each project gets its own memory directory at ~/.claude/projects/<project>/memory/… Auto memory is machine-local… Files are not shared across machines or cloud environments.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q7",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "想让 Claude“绝对不能”编辑某目录，下列哪种做法最可靠？",
+    "options": [
+      "在 CLAUDE.md 里写 IMPORTANT: never edit",
+      "在 auto memory 里记一条",
+      "用 PreToolUse hook 或 permissions.deny 规则",
+      "写进 CLAUDE.local.md"
+    ],
+    "answer": 2,
+    "explanation": "Claude treats CLAUDE.md files and auto memory as context. They aren't enforced configuration. To block an action regardless of what Claude decides, use a PreToolUse hook instead.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q8",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "CLAUDE.md 里的块级 HTML 注释（<!-- ... -->）会怎样？",
+    "options": [
+      "原样进入上下文",
+      "注入上下文前被去掉，不占 tokens",
+      "导致文件解析失败",
+      "被当作 @ 导入"
+    ],
+    "answer": 1,
+    "explanation": "Block-level HTML comments in CLAUDE.md files are stripped before the content is injected into Claude's context. 代码块里的注释会保留。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a03-q1",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "权限规则的评估顺序是？",
+    "options": [
+      "allow → ask → deny",
+      "deny → ask → allow，第一个命中的决定结果",
+      "越具体的规则越优先",
+      "按 settings 文件从低到高"
+    ],
+    "answer": 1,
+    "explanation": "Rules are evaluated in order: deny, then ask, then allow. The first match in that order determines the outcome, and rule specificity doesn't change the order.",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q2",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "用户设置里 allow 了某命令，项目设置里 deny 了同一命令，结果是？",
+    "options": [
+      "用户设置优先，放行",
+      "项目设置优先，但仍会弹窗",
+      "被 deny 拦截",
+      "取决于启动参数"
+    ],
+    "answer": 2,
+    "explanation": "If a tool is denied at any level, no other level can allow it… if user settings allow a permission and project settings deny it, the deny rule blocks it.",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q3",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "settings 的优先级从高到低是？",
+    "options": [
+      "用户 > 项目 > 本地 > 托管",
+      "托管 > 命令行 > 项目本地 > 共享项目 > 用户",
+      "命令行 > 托管 > 用户 > 项目",
+      "共享项目 > 项目本地 > 用户 > 托管"
+    ],
+    "answer": 1,
+    "explanation": "Settings precedence, highest first: managed settings, command line, project local, shared project, user. 列表类键（如 permissions.allow）会跨文件合并。",
+    "source_url": "https://code.claude.com/docs/en/settings.md"
+  },
+  {
+    "id": "a03-q4",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "deny 规则 Bash(git push *) 拦不住下面哪条命令？",
+    "options": [
+      "git push origin main",
+      "git push",
+      "git -C . push origin main",
+      "FOO=bar git push"
+    ],
+    "answer": 2,
+    "explanation": "官方表格：Bash(git push *) Doesn't stop git -C . push origin main 等改写形式。Bash 规则匹配命令文本，不是安全边界；要 OS 级限制用沙箱。deny 规则会越过前置变量赋值匹配。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q5",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "在 .claude/settings.json（项目设置）里写 \"defaultMode\": \"auto\" 会怎样？",
+    "options": [
+      "所有人启动都进 auto",
+      "不生效，Claude Code 使用内置默认值",
+      "报错无法启动",
+      "只对 VS Code 生效"
+    ],
+    "answer": 1,
+    "explanation": "If you set \"auto\" in .claude/settings.json or .claude/settings.local.json, the value doesn't take effect, and Claude Code then uses the built-in default… 写 bypassPermissions 也不生效、会以 Manual 启动。",
+    "source_url": "https://code.claude.com/docs/en/permission-modes.md"
+  },
+  {
+    "id": "a03-q6",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "开启沙箱后，下列哪个仍然不受沙箱约束？",
+    "options": [
+      "Claude 运行的 npm test",
+      "Claude 用 Read/Edit 工具读写文件",
+      "Bash 命令启动的子进程",
+      "PowerShell 命令"
+    ],
+    "answer": 1,
+    "explanation": "The sandbox covers shell commands only. Claude's file tools, MCP servers, and hooks run outside it. 内置文件工具受权限规则约束，不受 sandbox 约束。",
+    "source_url": "https://code.claude.com/docs/en/sandboxing.md"
+  },
+  {
+    "id": "a03-q7",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "项目 .claude/settings.json 里的 permissions.allow 规则什么时候生效？",
+    "options": [
+      "立即生效",
+      "你接受该文件夹的信任对话框之后",
+      "只在 -p 模式生效",
+      "需要重启电脑"
+    ],
+    "answer": 1,
+    "explanation": "permissions.allow rules and permissions.additionalDirectories entries in a project's .claude/settings.json grant capability, so Claude Code applies them only after you accept the workspace trust dialog. deny 规则立即生效。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q8",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "在 default（Manual）和 acceptEdits 模式下，Claude 写入 .husky/ 目录下的文件会？",
+    "options": [
+      "直接写入",
+      "弹窗询问（受保护路径）",
+      "被静默拒绝",
+      "交给分类器"
+    ],
+    "answer": 1,
+    "explanation": ".husky 在 Protected directories 列表里；default、acceptEdits 下受保护路径写入是 Prompted；auto 交给分类器，dontAsk 拒绝，bypassPermissions 允许。",
+    "source_url": "https://code.claude.com/docs/en/permission-modes.md"
+  },
+  {
+    "id": "a04-q1",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "在 plan mode 的批准提示上按 Shift+Tab 会怎样？",
+    "options": [
+      "离开 plan mode 不批准",
+      "批准计划",
+      "打开编辑器",
+      "清空上下文"
+    ],
+    "answer": 1,
+    "explanation": "At the approval prompt, press Esc first, since pressing Shift+Tab there approves the plan. 要编辑计划用 Ctrl+G。",
+    "source_url": "https://code.claude.com/docs/en/permission-modes.md"
+  },
+  {
+    "id": "a04-q2",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "Checkpoint 什么时候创建？",
+    "options": [
+      "每次文件保存",
+      "每次你发送开始新一轮的提示时",
+      "每次 git commit",
+      "每 5 分钟"
+    ],
+    "answer": 1,
+    "explanation": "Every prompt you send that starts a turn creates a new checkpoint；保留最近 100 个检查点的文件快照。",
+    "source_url": "https://code.claude.com/docs/en/checkpointing.md"
+  },
+  {
+    "id": "a04-q3",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "Claude 只用 Bash 命令（例如 sed -i）改过的一个文件，/rewind 能恢复吗？",
+    "options": [
+      "能，所有改动都被跟踪",
+      "不能，只被 Bash 改过的文件不被跟踪，用 git 恢复",
+      "只在 auto 模式下能",
+      "只能恢复对话"
+    ],
+    "answer": 1,
+    "explanation": "A file that only Bash commands changed isn't tracked and stays as it is. To revert it, use version control. 若该文件之前被文件编辑工具改过，之后的 Bash 改动能被撤销。",
+    "source_url": "https://code.claude.com/docs/en/checkpointing.md"
+  },
+  {
+    "id": "a04-q4",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "后台子代理在其他文件上做的修改，/rewind 会恢复吗？",
+    "options": [
+      "会",
+      "不会，需要用 git 撤销",
+      "只有 Explore 的会",
+      "会，但需要 --force"
+    ],
+    "answer": 1,
+    "explanation": "Any other subagent: rewinding restores only the files Claude had already edited in your conversation. The subagent's edits to other files stay, so use version control.",
+    "source_url": "https://code.claude.com/docs/en/checkpointing.md"
+  },
+  {
+    "id": "a04-q5",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "claude --worktree feature-auth 默认在哪里创建 worktree、用什么分支名？",
+    "options": [
+      "../feature-auth，分支 feature-auth",
+      ".claude/worktrees/feature-auth/，分支 worktree-feature-auth",
+      "/tmp/feature-auth，分支 main",
+      "当前目录，分支 claude/feature-auth"
+    ],
+    "answer": 1,
+    "explanation": "By default, the worktree is created under .claude/worktrees/<name>/ at your repository root, on a new branch named worktree-<name>.",
+    "source_url": "https://code.claude.com/docs/en/worktrees.md"
+  },
+  {
+    "id": "a04-q6",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "新 worktree 里没有 .env 等被 gitignore 的文件，官方推荐的办法是？",
+    "options": [
+      "把 .env 提交进仓库",
+      "在项目根写 .worktreeinclude 列出要复制的文件",
+      "用 --add-dir",
+      "关闭 worktree 隔离"
+    ],
+    "answer": 1,
+    "explanation": ".worktreeinclude 用 .gitignore 语法列出要复制到新 worktree 的文件；只复制既匹配模式又被 gitignore 的文件。",
+    "source_url": "https://code.claude.com/docs/en/claude-directory.md"
+  },
+  {
+    "id": "a04-q7",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "/branch 和 claude --continue 的区别是？",
+    "options": [
+      "没有区别",
+      "--continue 在同一会话 ID 追加；/branch 复制历史到新会话 ID，原会话不变",
+      "/branch 会创建 git 分支",
+      "--continue 会清空上下文"
+    ],
+    "answer": 1,
+    "explanation": "Resuming… reopens it under the same session ID and appends new messages… Forking with --fork-session or /branch copies the history into a new session ID, leaving the original unchanged.",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a05-q1",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "一个用于强制策略的 command hook，应该用哪个退出码来阻止动作？",
+    "options": [
+      "exit 1",
+      "exit 2",
+      "exit 0 并打印 block",
+      "exit 127"
+    ],
+    "answer": 1,
+    "explanation": "Exit code 1 without valid JSON output is a non-blocking error… If your hook is meant to enforce a policy, use exit 2.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q2",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "PostToolUse hook 以 exit 2 退出会发生什么？",
+    "options": [
+      "撤销刚才的编辑",
+      "阻止工具执行",
+      "把 stderr 显示给 Claude，工具已经执行过了",
+      "结束会话"
+    ],
+    "answer": 2,
+    "explanation": "PostToolUse: Can block? No — Shows stderr to Claude; the tool already ran.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q3",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "多个 PreToolUse hook 返回不同决定时，按什么优先级合并？",
+    "options": [
+      "allow > ask > deny",
+      "deny > defer > ask > allow",
+      "先执行完的为准",
+      "最后一个为准"
+    ],
+    "answer": 1,
+    "explanation": "When multiple PreToolUse hooks return different decisions, precedence is deny > defer > ask > allow.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q4",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "PreToolUse hook 返回 permissionDecision: \"allow\"，但 settings 里有一条匹配的 deny 规则，结果？",
+    "options": [
+      "hook 优先，放行",
+      "deny 规则仍然拦截",
+      "弹窗询问",
+      "取决于权限模式"
+    ],
+    "answer": 1,
+    "explanation": "PreToolUse hook decisions don't bypass permission rules… a matching deny rule blocks the call, and a matching ask rule still prompts even when the hook returned \"allow\".",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a05-q5",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "Stop hook 一直 exit 2，会无限循环吗？",
+    "options": [
+      "会",
+      "不会：连续 8 次（中间没有工具调用）后 Claude Code 强制结束本轮",
+      "不会：只允许 1 次",
+      "会，除非关闭 hooks"
+    ],
+    "answer": 1,
+    "explanation": "Claude Code applies an 8-consecutive-continuation cap… The count of consecutive continuations resets each time Claude calls a tool. 可用 CLAUDE_CODE_STOP_HOOK_BLOCK_CAP 调整。",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q6",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "策略 hook 的脚本路径写错了（脚本不存在），默认会怎样？",
+    "options": [
+      "动作被阻止",
+      "是非阻塞错误，动作照常执行",
+      "Claude Code 拒绝启动",
+      "自动禁用所有 hooks"
+    ],
+    "answer": 1,
+    "explanation": "a mistyped path in settings.json means the hook never runs… To block the action when the hook can't start, set onFailure: \"block\"（需 v2.1.295+）。",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q7",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "想“Claude 每次编辑后都自动格式化”，最合适的是？",
+    "options": [
+      "在 CLAUDE.md 写“编辑后请格式化”",
+      "PostToolUse hook，matcher 为 Edit|Write",
+      "PreToolUse hook",
+      "SessionStart hook"
+    ],
+    "answer": 1,
+    "explanation": "官方示例：PostToolUse 在每次 Edit 或 Write 之后运行 prettier；“whether Claude remembers the rule no longer matters, because Claude isn't the one running it”。",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  },
+  {
+    "id": "a05-q8",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "进入 worktree 后，hook 里的 ${CLAUDE_PROJECT_DIR} 指向哪里？",
+    "options": [
+      "worktree 根目录",
+      "仍是会话开始时的项目根；要 worktree 路径读输入 JSON 的 cwd",
+      "home 目录",
+      "/tmp"
+    ],
+    "answer": 1,
+    "explanation": "${CLAUDE_PROJECT_DIR} stays put… cwd follows Claude: the cwd field in the hook's input JSON is the worktree root.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a06-q1",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "一个会产生副作用的流程（例如发布、部署），想让它只在你输入 /release 时运行，应设置？",
+    "options": [
+      "user-invocable: false",
+      "disable-model-invocation: true",
+      "context: fork",
+      "allowed-tools: none"
+    ],
+    "answer": 1,
+    "explanation": "disable-model-invocation: true: Claude can't invoke the skill on its own. Use this for workflows with side effects… 同时它的描述也不进上下文。",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q2",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "默认情况下（不设任何调用控制），skill 的什么内容常驻上下文？",
+    "options": [
+      "完整 SKILL.md",
+      "只有名称和描述，完整内容在调用时加载",
+      "什么都不加载",
+      "SKILL.md 和所有支持文件"
+    ],
+    "answer": 1,
+    "explanation": "(default): Description in context, full skill loads when invoked.",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q3",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "allowed-tools 授予的免批准权限持续多久？",
+    "options": [
+      "整个会话",
+      "调用该 skill 的这一轮；你发下一条消息时清除",
+      "永久写入 settings",
+      "直到压缩"
+    ],
+    "answer": 1,
+    "explanation": "allowed-tools: Tools Claude can use without asking permission during the turn that invokes this skill. The grant clears when you send your next message.",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q4",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "SKILL.md 里写 !`git diff HEAD` 的效果是？",
+    "options": [
+      "让 Claude 自己决定要不要运行",
+      "在内容发给 Claude 之前先运行命令，用输出替换这一行",
+      "只是普通文本",
+      "在 skill 结束后运行"
+    ],
+    "answer": 1,
+    "explanation": "The !`<command>` syntax runs shell commands before the skill content is sent to Claude. The command output replaces the placeholder.",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q5",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": ".claude/commands/deploy.md 和 .claude/skills/deploy/SKILL.md 同名时运行哪个？",
+    "options": [
+      "commands 里的",
+      "skill",
+      "两个都运行",
+      "报错"
+    ],
+    "answer": 1,
+    "explanation": "A skill and a file in .claude/commands/ → The skill. 自定义命令已并入 skills，旧的 commands 文件仍可用。",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q6",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "压缩后，调用过的 skill 正文会怎样？",
+    "options": [
+      "全部丢失",
+      "重新附加，每个保留前 5,000 tokens，总计 25,000 tokens",
+      "只保留描述",
+      "原样完整保留"
+    ],
+    "answer": 1,
+    "explanation": "Invoked skill bodies: Re-injected, capped at 5,000 tokens per skill and 25,000 tokens total; oldest dropped first. 所以最重要的指令放在 SKILL.md 开头。",
+    "source_url": "https://code.claude.com/docs/en/context-window.md"
+  },
+  {
+    "id": "a06-q7",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "你在项目里建了一个名为 steward 的 skill，会怎样？",
+    "options": [
+      "覆盖内置 /steward",
+      "在 /ship 可用的环境里仍运行内置的 /steward，你的不会作为命令加载",
+      "两个都出现在菜单",
+      "Claude Code 报错退出"
+    ],
+    "answer": 1,
+    "explanation": "A skill or command of yours named ship, ship-local, or steward → Where /ship is available, the bundled /ship or /steward. 但 .claude/skills/steward/SKILL.md 会被 watch 和 PR Steward 当作照看 PR 的说明读取。",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a07-q1",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "一个普通（非 fork）子代理启动时，能看到你主对话的历史吗？",
+    "options": [
+      "能，完整历史",
+      "不能，它从全新上下文开始，只拿到 Claude 写的任务说明",
+      "只能看到最后 10 条",
+      "只能看到你读过的文件"
+    ],
+    "answer": 1,
+    "explanation": "Each subagent starts with a fresh, isolated context window. It doesn't see your conversation history… The exception is a fork.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q2",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "想做一个“只能读、不能改”的审查子代理，最可靠的方式是？",
+    "options": [
+      "在提示里写“不要改文件”",
+      "frontmatter 设 tools: Read, Grep, Glob",
+      "model: haiku",
+      "background: true"
+    ],
+    "answer": 1,
+    "explanation": "Give a custom subagent in .claude/agents/ only tools: Read, Grep, Glob. Now it's a reviewer that can't edit anything, and that limit is enforced by Claude Code rather than requested in a prompt.",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  },
+  {
+    "id": "a07-q3",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "内置的 Explore 和 Plan 子代理启动时有什么特别之处？",
+    "options": [
+      "会加载两份 CLAUDE.md",
+      "不加载 CLAUDE.md 和 git status 快照，且只读",
+      "可以写文件",
+      "必须手动调用"
+    ],
+    "answer": 1,
+    "explanation": "Explore and Plan start without your CLAUDE.md files and the git status snapshot… Tools: read-only tools; Write and Edit are denied.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q4",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "主对话处于 acceptEdits 或 auto 模式时，子代理 frontmatter 里的 permissionMode 会？",
+    "options": [
+      "优先生效",
+      "被忽略，子代理沿用主对话的模式",
+      "让子代理报错",
+      "只对 Bash 生效"
+    ],
+    "answer": 1,
+    "explanation": "When the main conversation is in bypassPermissions, acceptEdits, or auto mode, your subagent runs in that same mode and Claude Code ignores the permissionMode you set.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q5",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "项目级子代理和用户级子代理重名时，谁优先？",
+    "options": [
+      "用户级 ~/.claude/agents/",
+      "项目级 .claude/agents/",
+      "插件里的",
+      "随机"
+    ],
+    "answer": 1,
+    "explanation": "优先级：托管设置 1 > --agents 参数 2 > .claude/agents/ 3 > ~/.claude/agents/ 4 > 插件 5。",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q6",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "默认同时最多能跑多少个子代理？",
+    "options": [
+      "3",
+      "10",
+      "20",
+      "没有上限"
+    ],
+    "answer": 2,
+    "explanation": "By default, when 20 subagents are running in a session, spawning another with the Agent tool fails with Concurrent subagent limit reached.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q7",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "官方说用子代理“不能”带来什么？",
+    "options": [
+      "并行",
+      "一双没看过实现过程的眼睛",
+      "更聪明的答案",
+      "让长输出不进主对话"
+    ],
+    "answer": 2,
+    "explanation": "by default it's the same model (or a smaller one) on the same task. You get parallelism or a fresh pair of eyes out of it, but not a smarter answer.",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  },
+  {
+    "id": "a08-q1",
+    "chapter": "A8 MCP 接入",
+    "question": "claude mcp add 不带 --scope 时，服务器默认存在哪个范围？",
+    "options": [
+      "project（.mcp.json）",
+      "user（所有项目）",
+      "local（~/.claude.json 中该项目条目，仅你可用）",
+      "managed"
+    ],
+    "answer": 2,
+    "explanation": "By default it registers the server at local scope: private to you, active only in the current project. 存在 ~/.claude.json 该项目的条目下。",
+    "source_url": "https://code.claude.com/docs/en/mcp-quickstart.md"
+  },
+  {
+    "id": "a08-q2",
+    "chapter": "A8 MCP 接入",
+    "question": "想把一个 MCP 服务器分享给克隆仓库的所有人，应该？",
+    "options": [
+      "--scope user",
+      "--scope project，写入 .mcp.json 并提交",
+      "写进 CLAUDE.md",
+      "放进 settings.local.json"
+    ],
+    "answer": 1,
+    "explanation": "Re-add the server at project scope, which writes to .mcp.json in the project root… Teammates who clone the repository… see a prompt to approve the server.",
+    "source_url": "https://code.claude.com/docs/en/mcp-quickstart.md"
+  },
+  {
+    "id": "a08-q3",
+    "chapter": "A8 MCP 接入",
+    "question": "同名服务器同时定义在 local、project、user 三个范围，用哪个？",
+    "options": [
+      "user",
+      "project",
+      "local",
+      "合并三者字段"
+    ],
+    "answer": 2,
+    "explanation": "优先级：Local > Project > User > 插件 > claude.ai connectors；使用最高来源的完整条目，字段不跨范围合并。",
+    "source_url": "https://code.claude.com/docs/en/mcp.md"
+  },
+  {
+    "id": "a08-q4",
+    "chapter": "A8 MCP 接入",
+    "question": "开启 tool search（默认）时，MCP 服务器在会话开始时占用上下文的是？",
+    "options": [
+      "所有工具的完整定义",
+      "只有工具名和服务器说明",
+      "什么都不占",
+      "服务器的源代码"
+    ],
+    "answer": 1,
+    "explanation": "Only tool names and server instructions load at session start, so adding more MCP servers has minimal impact on your context window.",
+    "source_url": "https://code.claude.com/docs/en/mcp.md"
+  },
+  {
+    "id": "a08-q5",
+    "chapter": "A8 MCP 接入",
+    "question": "允许 github 服务器的所有工具，权限规则怎么写？",
+    "options": [
+      "Mcp(github)",
+      "mcp__github__*",
+      "github:*",
+      "Bash(gh *)"
+    ],
+    "answer": 1,
+    "explanation": "To match every tool from an MCP server, write mcp__<server>__*. To match one tool, write its full name, mcp__<server>__<tool>.",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a08-q6",
+    "chapter": "A8 MCP 接入",
+    "question": ".mcp.json 里要放 API key，官方推荐的做法是？",
+    "options": [
+      "明文写进去提交",
+      "用 ${VAR} 或 ${VAR:-default} 引用环境变量",
+      "写进 CLAUDE.md",
+      "放在 README"
+    ],
+    "answer": 1,
+    "explanation": "Claude Code supports environment variable expansion in .mcp.json files… ${VAR} / ${VAR:-default}，可用于 command、args、env、url、headers。",
+    "source_url": "https://code.claude.com/docs/en/mcp.md"
+  },
+  {
+    "id": "a08-q7",
+    "chapter": "A8 MCP 接入",
+    "question": "对于已有命令行工具（如 gh）的系统，官方最佳实践更推荐？",
+    "options": [
+      "一定要用 MCP",
+      "通常用 CLI 最简单；没有 CLI 的系统再用 MCP",
+      "两者都不用",
+      "用 WebFetch"
+    ],
+    "answer": 1,
+    "explanation": "If that system has a CLI, that's usually the easiest way in… For systems without a CLI, there's MCP.",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  },
+  {
+    "id": "a09-q1",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "Claude Ship（Code Review、PR Steward、Claude Approvals）面向哪些套餐？",
+    "options": [
+      "所有套餐",
+      "Pro 和 Max",
+      "Team 和 Enterprise",
+      "仅 Enterprise"
+    ],
+    "answer": 2,
+    "explanation": "Claude Ship is for organizations on Team and Enterprise plans. 仓库需在 GitHub；有 ZDR、HIPAA 配置或 CMEK 的组织不可用。",
+    "source_url": "https://code.claude.com/docs/en/claude-ship.md"
+  },
+  {
+    "id": "a09-q2",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "官方建议开启 Claude Ship 三个 agent 的顺序是？",
+    "options": [
+      "Approvals → Steward → Code Review",
+      "Code Review → PR Steward → Claude Approvals",
+      "三个同时开",
+      "PR Steward → Code Review → Approvals"
+    ],
+    "answer": 1,
+    "explanation": "Turn on one agent at a time in one repository, in this order: Code Review, PR Steward (start with Manual), Claude Approvals (start in observe mode). 关闭时反过来，先关 Approvals。",
+    "source_url": "https://code.claude.com/docs/en/claude-ship.md"
+  },
+  {
+    "id": "a09-q3",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "PR Steward 会批准或合并 PR 吗？",
+    "options": [
+      "会自动合并",
+      "会批准但不合并",
+      "设计上不批准也不合并，用分支保护要求人工批准",
+      "取决于 approvals.yml"
+    ],
+    "answer": 2,
+    "explanation": "Steward is designed not to approve or merge pull requests. Use branch protection to require the approvals you want before anything merges.",
+    "source_url": "https://code.claude.com/docs/en/claude-ship.md"
+  },
+  {
+    "id": "a09-q4",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "Claude Approvals 的 observe 模式下，检查项会阻止合并吗？",
+    "options": [
+      "会",
+      "通常不会：只显示策略会怎么判定，且仍计费",
+      "会，并且 Claude 会批准",
+      "observe 模式不运行"
+    ],
+    "answer": 1,
+    "explanation": "observe: the Claude Approvals check shows what the policy would decide, Claude doesn't approve, and the check normally counts as passing. Reviews and classifier runs are billed in observe mode.",
+    "source_url": "https://code.claude.com/docs/en/approvals-setup.md"
+  },
+  {
+    "id": "a09-q5",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "运行 /ship 之后，它在提交和推送前会怎样？",
+    "options": [
+      "弹出确认框等你点",
+      "不弹确认框，显示以 Esc to cancel 结尾的提示，几秒后继续",
+      "只生成命令让你自己执行",
+      "要求输入 yes"
+    ],
+    "answer": 1,
+    "explanation": "/ship proceeds with no confirmation prompt… Before the commit, and again before the push, a line that ends Esc to cancel says what's about to happen. If you do nothing, /ship continues after a few seconds.",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a09-q6",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "watch 期间 Claude 自主行动时，Claude Code 会阻止哪类 gh/git 命令？",
+    "options": [
+      "所有 push",
+      "合并 PR、批准 PR、开启自动合并、强推",
+      "git status",
+      "运行测试"
+    ],
+    "answer": 1,
+    "explanation": "When Claude acts without a message from you, Claude Code blocks gh and git commands that merge the pull request, approve it, turn on auto-merge, or force-push.",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a09-q7",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "本地 /code-review 和托管 Code Review 读取的指令文件有何不同？",
+    "options": [
+      "两者都只读 REVIEW.md",
+      "/code-review 读 CLAUDE.md、不读 REVIEW.md；托管服务两者都读",
+      "两者都不读 CLAUDE.md",
+      "/code-review 只读 REVIEW.md"
+    ],
+    "answer": 1,
+    "explanation": "The service reads both CLAUDE.md and REVIEW.md. The /code-review command… follows your CLAUDE.md… It doesn't read REVIEW.md.",
+    "source_url": "https://code.claude.com/docs/en/code-review-local.md"
+  },
+  {
+    "id": "a09-q8",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "一个人维护的私有仓库，想“强制执行”Claude Approvals 策略，会遇到什么前置条件问题？",
+    "options": [
+      "没有问题",
+      "强制前需要两名有写权限的人；私有仓库要求 required check 还需要付费 GitHub 套餐",
+      "只需要 Pro 套餐",
+      "必须用 GitLab"
+    ],
+    "answer": 1,
+    "explanation": "Prerequisites：Admin access… A private repository also needs a paid GitHub plan；Two people with write access, before you enforce either policy on this page.",
+    "source_url": "https://code.claude.com/docs/en/approvals-setup.md"
+  },
+  {
+    "id": "a10-q1",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "官方怎么描述 CLAUDE.md 与 settings 权限规则的区别？",
+    "options": [
+      "两者都是硬性限制",
+      "CLAUDE.md 是硬性限制，settings 只是建议",
+      "settings 规则由客户端强制执行；CLAUDE.md 影响 Claude 的行为，但不是硬性强制层",
+      "取决于权限模式"
+    ],
+    "answer": 2,
+    "explanation": "Settings rules are enforced by the client regardless of what Claude decides to do. CLAUDE.md instructions shape Claude's behavior but are not a hard enforcement layer.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a10-q2",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "/ship 的 watch 在 Claude 自主行动时推送提交，仓库的 git hooks（husky、.githooks）会运行吗？",
+    "options": [
+      "会，和平常一样",
+      "不会：它用 git -c core.hooksPath=/dev/null 的形式，git hooks 不运行",
+      "只运行 pre-push",
+      "只在 auto 模式下运行"
+    ],
+    "answer": 1,
+    "explanation": "During a watch… it writes its git fetches, merges, commits, and pushes in the form git -c core.hooksPath=/dev/null push. 仓库 hooks 目录里的 git hooks 在这些轮次里不运行，所以 CI 必须是 required check。",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a10-q3",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "在 settings 里 deny Bash(git push *) 对 /ship 有什么影响？",
+    "options": [
+      "没有影响",
+      "/ship 把提交推送留给你，并且不启动 watch",
+      "只禁止强推",
+      "watch 照常，但每次推送前询问"
+    ],
+    "answer": 1,
+    "explanation": "官方表格：deny rule such as Bash(git push *) → For /ship's own commit and push: /ship leaves those steps to you；During a watch: No watch starts。ask Bash(git push *) 则不影响 watch。",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a10-q4",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "只有你一个有写权限的人时，能强制（enforce）Claude Approvals 的入门策略吗？",
+    "options": [
+      "可以，作者占一个 seat 就够",
+      "官方前置条件要求强制前有两名有写权限的人；只有一人时 .claude/ 下的改动等情况永远过不了，‘两人’策略下任何改动都过不了",
+      "可以，Claude 会代替第二个人批准",
+      "只要是公开仓库就可以"
+    ],
+    "answer": 1,
+    "explanation": "Two people with write access, before you enforce either policy on this page. With only one, the check can't pass on a change under .claude/, or where Claude's review fails or gives no result.",
+    "source_url": "https://code.claude.com/docs/en/approvals-setup.md"
+  },
+  {
+    "id": "a10-q5",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "以下哪个目录**不在** Claude Code 内置的受保护路径里，需要自己用 deny 规则或 hook 保护？",
+    "options": [
+      ".git",
+      ".husky",
+      ".githooks",
+      ".claude"
+    ],
+    "answer": 2,
+    "explanation": "内置受保护目录包括 .git、.husky、.claude、.vscode 等；用 core.hooksPath 指向的 .githooks 不在列表里，acceptEdits 下可被直接修改。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a10-q6",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "Claude 进入 worktree 后，hook 里的 ${CLAUDE_PROJECT_DIR} 指向哪里？",
+    "options": [
+      "当前 worktree 根目录",
+      "会话启动时的项目根目录（不跟随 worktree）；要 worktree 路径应读输入 JSON 的 cwd",
+      "用户 home 目录",
+      "未定义"
+    ],
+    "answer": 1,
+    "explanation": "${CLAUDE_PROJECT_DIR} stays put… cwd follows Claude: the cwd field in the hook's input JSON is the worktree root. 所以模板按文件所在仓库根计算相对路径。",
+    "source_url": "https://code.claude.com/docs/en/worktrees.md"
+  },
+  {
+    "id": "a10-q7",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "知行快刷是公开仓库。你有未提交的改动，直接在默认分支上运行 /ship 会怎样？",
+    "options": [
+      "自动新建分支、提交并开 PR",
+      "公开仓库里 /ship 不替你提交未提交的改动，需要你先在非默认分支上自己提交",
+      "报错退出且删除改动",
+      "提交到 main"
+    ],
+    "answer": 1,
+    "explanation": "The repository is public: if you're on a branch other than the default branch and it has commits of its own, /ship pushes those… Otherwise, commit your work on a branch other than the default branch, then run /ship again.",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a10-q8",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "本地 /code-review 读取 REVIEW.md 吗？",
+    "options": [
+      "读，和托管 Code Review 一样",
+      "不读：它遵循 CLAUDE.md；REVIEW.md 只配置托管的 Code Review 服务",
+      "只在 --fix 时读",
+      "只读子目录里的 REVIEW.md"
+    ],
+    "answer": 1,
+    "explanation": "Instructions: the review follows your CLAUDE.md… It doesn't read REVIEW.md. That file configures the managed Code Review service on GitHub pull requests.",
+    "source_url": "https://code.claude.com/docs/en/code-review-local.md"
+  },
+  {
+    "id": "a10-q9",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "在 deny 列表里写 Read(.env.*) 之后紧跟 Read(!.env.example)，效果是？",
+    "options": [
+      "两条互相抵消，什么都不拦",
+      "拦住任意深度的 .env.* 文件，但 .env.example 例外",
+      "只拦根目录的 .env.example",
+      "! 规则在 deny 里无效"
+    ],
+    "answer": 1,
+    "explanation": "不带路径的文件名按 gitignore 语义匹配任意深度；deny/ask 里以 ! 开头的规则是 gitignore 取反，从同一文件里写在它前面的 path 规则中挖掉匹配的路径。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a10-q10",
+    "chapter": "A10 防乱跑仓库模板 + 知行快刷实战",
+    "question": "单人仓库在 GitHub 分支保护里把“需要的批准数”设为 1，会发生什么？",
+    "options": [
+      "Claude 会自动批准",
+      "你自己也合并不了：GitHub 不允许 PR 作者批准自己的 PR，应设为 0（只要求走 PR）",
+      "没有区别",
+      "CI 不再运行"
+    ],
+    "answer": 1,
+    "explanation": "这是 GitHub 的规则（非 Claude Code）：作者不能批准自己的 PR。单人仓库用 required status checks + 0 个必需批准，合并仍由你本人点。",
+    "source_url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches"
+  }
+]
