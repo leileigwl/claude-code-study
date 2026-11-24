@@ -197,6 +197,11 @@ hooks 以你的身份运行任意命令，**在沙箱之外**。仓库里提交�
 
 用 Node 写脚本，Windows/macOS/Linux 都能跑，也不依赖 `jq`。这三个文件就在本站仓库的 `template/.claude/hooks/` 里，可直接复制。
 
+> 下面展示的是**讲原理用的精简版**。`template/` 里的正式版多做了三件事（[第 10 章](./10-repo-template)逐行说明）：
+> 1. **worktree 安全**：官方说明 `${CLAUDE_PROJECT_DIR}` 不跟随 worktree、输入 JSON 的 `cwd` 才跟随，所以正式版按“文件所在的仓库根”算相对路径，在 `.claude/worktrees/<名>/` 里同样拦得住；
+> 2. **多包仓库**：lint 在离文件最近的 `package.json` / `pyproject.toml` 目录运行，Stop 检查按改动路径只跑相关命令；
+> 3. 多一个 `"ask"` 列表（`CLAUDE.md`、`REVIEW.md`、`.mcp.json`、`.claude/approvals.yml` 等规则文件），以及 `compact-reminder.mjs`（替代 `cat`，Windows 也能用）。
+
 ### 门 1：编辑前（PreToolUse）
 
 ```js
@@ -337,7 +342,15 @@ process.exit(0)
       {
         "matcher": "compact",
         "hooks": [
-          { "type": "command", "command": "cat \"${CLAUDE_PROJECT_DIR}\"/.claude/compact-reminder.md" }
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/compact-reminder.mjs",
+              "${CLAUDE_PROJECT_DIR}/.claude/compact-reminder.md"
+            ],
+            "timeout": 10
+          }
         ]
       }
     ]
