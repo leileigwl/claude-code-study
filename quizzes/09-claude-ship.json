@@ -1,0 +1,74 @@
+[
+  {
+    "id": "a09-q1",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "Claude Ship（Code Review、PR Steward、Claude Approvals）面向哪些套餐？",
+    "options": ["所有套餐", "Pro 和 Max", "Team 和 Enterprise", "仅 Enterprise"],
+    "answer": 2,
+    "explanation": "Claude Ship is for organizations on Team and Enterprise plans. 仓库需在 GitHub；有 ZDR、HIPAA 配置或 CMEK 的组织不可用。",
+    "source_url": "https://code.claude.com/docs/en/claude-ship.md"
+  },
+  {
+    "id": "a09-q2",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "官方建议开启 Claude Ship 三个 agent 的顺序是？",
+    "options": ["Approvals → Steward → Code Review", "Code Review → PR Steward → Claude Approvals", "三个同时开", "PR Steward → Code Review → Approvals"],
+    "answer": 1,
+    "explanation": "Turn on one agent at a time in one repository, in this order: Code Review, PR Steward (start with Manual), Claude Approvals (start in observe mode). 关闭时反过来，先关 Approvals。",
+    "source_url": "https://code.claude.com/docs/en/claude-ship.md"
+  },
+  {
+    "id": "a09-q3",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "PR Steward 会批准或合并 PR 吗？",
+    "options": ["会自动合并", "会批准但不合并", "设计上不批准也不合并，用分支保护要求人工批准", "取决于 approvals.yml"],
+    "answer": 2,
+    "explanation": "Steward is designed not to approve or merge pull requests. Use branch protection to require the approvals you want before anything merges.",
+    "source_url": "https://code.claude.com/docs/en/claude-ship.md"
+  },
+  {
+    "id": "a09-q4",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "Claude Approvals 的 observe 模式下，检查项会阻止合并吗？",
+    "options": ["会", "通常不会：只显示策略会怎么判定，且仍计费", "会，并且 Claude 会批准", "observe 模式不运行"],
+    "answer": 1,
+    "explanation": "observe: the Claude Approvals check shows what the policy would decide, Claude doesn't approve, and the check normally counts as passing. Reviews and classifier runs are billed in observe mode.",
+    "source_url": "https://code.claude.com/docs/en/approvals-setup.md"
+  },
+  {
+    "id": "a09-q5",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "运行 /ship 之后，它在提交和推送前会怎样？",
+    "options": ["弹出确认框等你点", "不弹确认框，显示以 Esc to cancel 结尾的提示，几秒后继续", "只生成命令让你自己执行", "要求输入 yes"],
+    "answer": 1,
+    "explanation": "/ship proceeds with no confirmation prompt… Before the commit, and again before the push, a line that ends Esc to cancel says what's about to happen. If you do nothing, /ship continues after a few seconds.",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a09-q6",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "watch 期间 Claude 自主行动时，Claude Code 会阻止哪类 gh/git 命令？",
+    "options": ["所有 push", "合并 PR、批准 PR、开启自动合并、强推", "git status", "运行测试"],
+    "answer": 1,
+    "explanation": "When Claude acts without a message from you, Claude Code blocks gh and git commands that merge the pull request, approve it, turn on auto-merge, or force-push.",
+    "source_url": "https://code.claude.com/docs/en/ship-command.md"
+  },
+  {
+    "id": "a09-q7",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "本地 /code-review 和托管 Code Review 读取的指令文件有何不同？",
+    "options": ["两者都只读 REVIEW.md", "/code-review 读 CLAUDE.md、不读 REVIEW.md；托管服务两者都读", "两者都不读 CLAUDE.md", "/code-review 只读 REVIEW.md"],
+    "answer": 1,
+    "explanation": "The service reads both CLAUDE.md and REVIEW.md. The /code-review command… follows your CLAUDE.md… It doesn't read REVIEW.md.",
+    "source_url": "https://code.claude.com/docs/en/code-review-local.md"
+  },
+  {
+    "id": "a09-q8",
+    "chapter": "A9 Claude Ship 与 /ship",
+    "question": "一个人维护的私有仓库，想“强制执行”Claude Approvals 策略，会遇到什么前置条件问题？",
+    "options": ["没有问题", "强制前需要两名有写权限的人；私有仓库要求 required check 还需要付费 GitHub 套餐", "只需要 Pro 套餐", "必须用 GitLab"],
+    "answer": 1,
+    "explanation": "Prerequisites：Admin access… A private repository also needs a paid GitHub plan；Two people with write access, before you enforce either policy on this page.",
+    "source_url": "https://code.claude.com/docs/en/approvals-setup.md"
+  }
+]
