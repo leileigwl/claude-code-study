@@ -198,7 +198,7 @@ paths:
 
 ### 第 3 步：一个可直接用的骨架
 
-`CLAUDE.md`（控制在几十行）：
+`CLAUDE.md`（控制在几十行；下面是通用示例，知行快刷的真实结构——Taro + React 前端、Python + uv 后端、`AGENTS.md` 为唯一规则来源——见[第 10 章](./10-repo-template)）：
 
 ```markdown
 <!-- 维护提示：这里只写 Claude 读代码推不出来的东西；硬规则放 .claude/settings.json -->

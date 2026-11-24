@@ -148,7 +148,7 @@ import quiz from '../../quizzes/03-settings-permissions-sandbox.json'
 
 以及文件：`.gitconfig`、`.gitmodules`、各种 shell rc（`.bashrc`、`.zshrc`…）、`.npmrc`、`.yarnrc`、`.pre-commit-config.yaml`、`lefthook.yml`、`.mcp.json`、`.claude.json` 等。
 
-> 也就是说：**用 husky 管 git hooks 的仓库，Claude 改 `.husky/` 默认就得过你这一关**。
+> 也就是说：**用 husky 管 git hooks 的仓库，Claude 改 `.husky/` 默认就得过你这一关**。但用 `git config core.hooksPath .githooks` 的仓库（知行快刷就是），`.githooks/` **不在**这个列表里，要自己加 `Edit(./.githooks/**)` deny 和 hook 保护（[第 10 章](./10-repo-template)）。
 
 ### 工作目录与信任
 

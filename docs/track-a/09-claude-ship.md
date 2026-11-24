@@ -166,7 +166,7 @@ rules:
 | auto 分类器、PreToolUse 等工具 hooks | 不运行 | 不作用于 Claude Code 自己运行的 `gh`/`git` 命令 |
 | 仓库 git hooks（husky 等） | 运行 | watch 自主轮次里 Claude 的 fetch/merge/commit/push **不运行**它们 |
 
-最后一行对你很重要：**watch 推上去的提交不会经过本地 husky**，所以 CI（GitHub Actions）必须作为 required check 兜底。
+最后一行对你很重要：**watch 推上去的提交不会经过本地 git hooks**（husky、`core.hooksPath` 指向的 `.githooks/` 都一样），所以 CI（GitHub Actions）必须作为 required check 兜底。
 
 ## 落地到自己的仓库
 

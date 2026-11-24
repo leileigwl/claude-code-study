@@ -63,7 +63,7 @@ import quiz from '../../quizzes/10-repo-template.json'
 
 ### 第 3 层：本地 git hooks（快反馈）
 
-知行快刷用 `git config core.hooksPath .githooks`：`pre-commit` 只查暂存文件（ESLint + tsc、ruff，拦 `.env` 与 `backend/data/`），`pre-push` 跑与 CI 相同的完整闸门。它们**拦得住你和 Claude 在终端里的普通 `git commit`/`git push`**，但拦不住两种情况：
+知行快刷用 `git config core.hooksPath .githooks`：`pre-commit` 只查暂存文件（ESLint + tsc、ruff，拦 `.env` 与 `backend/data/`），`pre-push` 跑与 CI 相同的闸门（构建除外，构建交给 CI）。它们**拦得住你和 Claude 在终端里的普通 `git commit`/`git push`**，但拦不住两种情况：
 
 1. 显式绕过：`git commit --no-verify`、`git push --no-verify`、改 `core.hooksPath`——模板用 deny 规则挡住 Claude 的常见写法；
 2. **`/ship` 的 watch**：官方原文——“During a watch, when Claude acts without a message from you, it writes its git fetches, merges, commits, and pushes in the form `git -c core.hooksPath=/dev/null push`.” 表格里写明仓库 hooks 目录里的 git hooks “don't run for Claude's fetches, merges, commits, and pushes on those turns”。husky 和 `.githooks/` 一样被跳过。
@@ -324,7 +324,7 @@ echo '{"cwd":"'$PWD'"}' | node .claude/hooks/verify-before-stop.mjs; echo "exit=
 | `agents/explorer.md`、`agents/reviewer.md` | ✅ 原样 | — |
 | `agents/test-runner.md` | — | 用 `examples/` 版：pnpm / uv 命令 |
 
-`steward` 这个文件夹名是 `/steward`、`/ship` watch 和 PR Steward 约定读取的位置（`.claude/skills/steward/SKILL.md`），不要改名。
+`steward` 这个文件夹名是 `/steward`、`/ship` watch 和 PR Steward 约定读取的位置（`.claude/skills/steward/SKILL.md`），不要改名。注意它**不会**作为你自己的 `/steward` 命令出现：`ship`、`ship-local`、`steward` 这几个名字在 `/ship` 可用时归内置命令（skills 页“A skill or command of yours named ship, ship-local, or steward”），文件内容是被当作“照看规则”读取的。
 
 ### 第 6 步：`.mcp.json`、`.worktreeinclude`、`.gitignore`
 
