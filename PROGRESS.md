@@ -46,4 +46,7 @@
 
 ## 部署记录
 
-（推送与 Pages 状态见最近一次提交后的 Actions 运行。）
+- 2026-11-24：推送到 `main`；GitHub Pages 来源设为 **GitHub Actions**（API 创建因 token 缺少 Pages/Administration 权限返回 403，改在仓库 Settings → Pages 网页里设置）。
+- 首次 `deploy.yml` 运行在 `configure-pages` 失败（当时 Pages 尚未启用），启用后重跑成功；之后每次推送自动部署。
+- 线上：<https://leileigwl.github.io/claude-code-study/> 返回 200；首页、第 10 章动画（8 步）、B 路线表格经浏览器目视检查。
+- `sync-docs.yml` 尚未实际触发过（每周一 01:00 UTC 或手动 workflow_dispatch）。
