@@ -1,0 +1,74 @@
+[
+  {
+    "id": "a05-q1",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "一个用于强制策略的 command hook，应该用哪个退出码来阻止动作？",
+    "options": ["exit 1", "exit 2", "exit 0 并打印 block", "exit 127"],
+    "answer": 1,
+    "explanation": "Exit code 1 without valid JSON output is a non-blocking error… If your hook is meant to enforce a policy, use exit 2.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q2",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "PostToolUse hook 以 exit 2 退出会发生什么？",
+    "options": ["撤销刚才的编辑", "阻止工具执行", "把 stderr 显示给 Claude，工具已经执行过了", "结束会话"],
+    "answer": 2,
+    "explanation": "PostToolUse: Can block? No — Shows stderr to Claude; the tool already ran.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q3",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "多个 PreToolUse hook 返回不同决定时，按什么优先级合并？",
+    "options": ["allow > ask > deny", "deny > defer > ask > allow", "先执行完的为准", "最后一个为准"],
+    "answer": 1,
+    "explanation": "When multiple PreToolUse hooks return different decisions, precedence is deny > defer > ask > allow.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q4",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "PreToolUse hook 返回 permissionDecision: \"allow\"，但 settings 里有一条匹配的 deny 规则，结果？",
+    "options": ["hook 优先，放行", "deny 规则仍然拦截", "弹窗询问", "取决于权限模式"],
+    "answer": 1,
+    "explanation": "PreToolUse hook decisions don't bypass permission rules… a matching deny rule blocks the call, and a matching ask rule still prompts even when the hook returned \"allow\".",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a05-q5",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "Stop hook 一直 exit 2，会无限循环吗？",
+    "options": ["会", "不会：连续 8 次（中间没有工具调用）后 Claude Code 强制结束本轮", "不会：只允许 1 次", "会，除非关闭 hooks"],
+    "answer": 1,
+    "explanation": "Claude Code applies an 8-consecutive-continuation cap… The count of consecutive continuations resets each time Claude calls a tool. 可用 CLAUDE_CODE_STOP_HOOK_BLOCK_CAP 调整。",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q6",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "策略 hook 的脚本路径写错了（脚本不存在），默认会怎样？",
+    "options": ["动作被阻止", "是非阻塞错误，动作照常执行", "Claude Code 拒绝启动", "自动禁用所有 hooks"],
+    "answer": 1,
+    "explanation": "a mistyped path in settings.json means the hook never runs… To block the action when the hook can't start, set onFailure: \"block\"（需 v2.1.295+）。",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  },
+  {
+    "id": "a05-q7",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "想“Claude 每次编辑后都自动格式化”，最合适的是？",
+    "options": ["在 CLAUDE.md 写“编辑后请格式化”", "PostToolUse hook，matcher 为 Edit|Write", "PreToolUse hook", "SessionStart hook"],
+    "answer": 1,
+    "explanation": "官方示例：PostToolUse 在每次 Edit 或 Write 之后运行 prettier；“whether Claude remembers the rule no longer matters, because Claude isn't the one running it”。",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  },
+  {
+    "id": "a05-q8",
+    "chapter": "A5 Hooks 硬性门禁",
+    "question": "进入 worktree 后，hook 里的 ${CLAUDE_PROJECT_DIR} 指向哪里？",
+    "options": ["worktree 根目录", "仍是会话开始时的项目根；要 worktree 路径读输入 JSON 的 cwd", "home 目录", "/tmp"],
+    "answer": 1,
+    "explanation": "${CLAUDE_PROJECT_DIR} stays put… cwd follows Claude: the cwd field in the hook's input JSON is the worktree root.",
+    "source_url": "https://code.claude.com/docs/en/hooks.md"
+  }
+]

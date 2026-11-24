@@ -1,0 +1,65 @@
+[
+  {
+    "id": "a04-q1",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "在 plan mode 的批准提示上按 Shift+Tab 会怎样？",
+    "options": ["离开 plan mode 不批准", "批准计划", "打开编辑器", "清空上下文"],
+    "answer": 1,
+    "explanation": "At the approval prompt, press Esc first, since pressing Shift+Tab there approves the plan. 要编辑计划用 Ctrl+G。",
+    "source_url": "https://code.claude.com/docs/en/permission-modes.md"
+  },
+  {
+    "id": "a04-q2",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "Checkpoint 什么时候创建？",
+    "options": ["每次文件保存", "每次你发送开始新一轮的提示时", "每次 git commit", "每 5 分钟"],
+    "answer": 1,
+    "explanation": "Every prompt you send that starts a turn creates a new checkpoint；保留最近 100 个检查点的文件快照。",
+    "source_url": "https://code.claude.com/docs/en/checkpointing.md"
+  },
+  {
+    "id": "a04-q3",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "Claude 只用 Bash 命令（例如 sed -i）改过的一个文件，/rewind 能恢复吗？",
+    "options": ["能，所有改动都被跟踪", "不能，只被 Bash 改过的文件不被跟踪，用 git 恢复", "只在 auto 模式下能", "只能恢复对话"],
+    "answer": 1,
+    "explanation": "A file that only Bash commands changed isn't tracked and stays as it is. To revert it, use version control. 若该文件之前被文件编辑工具改过，之后的 Bash 改动能被撤销。",
+    "source_url": "https://code.claude.com/docs/en/checkpointing.md"
+  },
+  {
+    "id": "a04-q4",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "后台子代理在其他文件上做的修改，/rewind 会恢复吗？",
+    "options": ["会", "不会，需要用 git 撤销", "只有 Explore 的会", "会，但需要 --force"],
+    "answer": 1,
+    "explanation": "Any other subagent: rewinding restores only the files Claude had already edited in your conversation. The subagent's edits to other files stay, so use version control.",
+    "source_url": "https://code.claude.com/docs/en/checkpointing.md"
+  },
+  {
+    "id": "a04-q5",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "claude --worktree feature-auth 默认在哪里创建 worktree、用什么分支名？",
+    "options": ["../feature-auth，分支 feature-auth", ".claude/worktrees/feature-auth/，分支 worktree-feature-auth", "/tmp/feature-auth，分支 main", "当前目录，分支 claude/feature-auth"],
+    "answer": 1,
+    "explanation": "By default, the worktree is created under .claude/worktrees/<name>/ at your repository root, on a new branch named worktree-<name>.",
+    "source_url": "https://code.claude.com/docs/en/worktrees.md"
+  },
+  {
+    "id": "a04-q6",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "新 worktree 里没有 .env 等被 gitignore 的文件，官方推荐的办法是？",
+    "options": ["把 .env 提交进仓库", "在项目根写 .worktreeinclude 列出要复制的文件", "用 --add-dir", "关闭 worktree 隔离"],
+    "answer": 1,
+    "explanation": ".worktreeinclude 用 .gitignore 语法列出要复制到新 worktree 的文件；只复制既匹配模式又被 gitignore 的文件。",
+    "source_url": "https://code.claude.com/docs/en/claude-directory.md"
+  },
+  {
+    "id": "a04-q7",
+    "chapter": "A4 Plan mode、会话、checkpoint、worktree",
+    "question": "/branch 和 claude --continue 的区别是？",
+    "options": ["没有区别", "--continue 在同一会话 ID 追加；/branch 复制历史到新会话 ID，原会话不变", "/branch 会创建 git 分支", "--continue 会清空上下文"],
+    "answer": 1,
+    "explanation": "Resuming… reopens it under the same session ID and appends new messages… Forking with --fork-session or /branch copies the history into a new session ID, leaving the original unchanged.",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  }
+]
