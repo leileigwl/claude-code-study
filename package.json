@@ -1,0 +1,20 @@
+{
+  "name": "claude-code-study",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Claude Code 官方文档中文学习站：落地实战（管住 AI）+ 官方文档精读",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "gen:track-b": "node scripts/gen-track-b.mjs",
+    "gen:quizzes": "node scripts/build-quizzes.mjs",
+    "sync:docs": "node scripts/sync-docs.mjs",
+    "sync:docs:deep": "node scripts/sync-docs.mjs --deep"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.46"
+  }
+}
