@@ -1,0 +1,65 @@
+[
+  {
+    "id": "a07-q1",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "一个普通（非 fork）子代理启动时，能看到你主对话的历史吗？",
+    "options": ["能，完整历史", "不能，它从全新上下文开始，只拿到 Claude 写的任务说明", "只能看到最后 10 条", "只能看到你读过的文件"],
+    "answer": 1,
+    "explanation": "Each subagent starts with a fresh, isolated context window. It doesn't see your conversation history… The exception is a fork.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q2",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "想做一个“只能读、不能改”的审查子代理，最可靠的方式是？",
+    "options": ["在提示里写“不要改文件”", "frontmatter 设 tools: Read, Grep, Glob", "model: haiku", "background: true"],
+    "answer": 1,
+    "explanation": "Give a custom subagent in .claude/agents/ only tools: Read, Grep, Glob. Now it's a reviewer that can't edit anything, and that limit is enforced by Claude Code rather than requested in a prompt.",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  },
+  {
+    "id": "a07-q3",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "内置的 Explore 和 Plan 子代理启动时有什么特别之处？",
+    "options": ["会加载两份 CLAUDE.md", "不加载 CLAUDE.md 和 git status 快照，且只读", "可以写文件", "必须手动调用"],
+    "answer": 1,
+    "explanation": "Explore and Plan start without your CLAUDE.md files and the git status snapshot… Tools: read-only tools; Write and Edit are denied.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q4",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "主对话处于 acceptEdits 或 auto 模式时，子代理 frontmatter 里的 permissionMode 会？",
+    "options": ["优先生效", "被忽略，子代理沿用主对话的模式", "让子代理报错", "只对 Bash 生效"],
+    "answer": 1,
+    "explanation": "When the main conversation is in bypassPermissions, acceptEdits, or auto mode, your subagent runs in that same mode and Claude Code ignores the permissionMode you set.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q5",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "项目级子代理和用户级子代理重名时，谁优先？",
+    "options": ["用户级 ~/.claude/agents/", "项目级 .claude/agents/", "插件里的", "随机"],
+    "answer": 1,
+    "explanation": "优先级：托管设置 1 > --agents 参数 2 > .claude/agents/ 3 > ~/.claude/agents/ 4 > 插件 5。",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q6",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "默认同时最多能跑多少个子代理？",
+    "options": ["3", "10", "20", "没有上限"],
+    "answer": 2,
+    "explanation": "By default, when 20 subagents are running in a session, spawning another with the Agent tool fails with Concurrent subagent limit reached.",
+    "source_url": "https://code.claude.com/docs/en/sub-agents.md"
+  },
+  {
+    "id": "a07-q7",
+    "chapter": "A7 Subagents 分工与边界",
+    "question": "官方说用子代理“不能”带来什么？",
+    "options": ["并行", "一双没看过实现过程的眼睛", "更聪明的答案", "让长输出不进主对话"],
+    "answer": 2,
+    "explanation": "by default it's the same model (or a smaller one) on the same task. You get parallelism or a fresh pair of eyes out of it, but not a smarter answer.",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  }
+]

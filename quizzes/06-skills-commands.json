@@ -1,0 +1,65 @@
+[
+  {
+    "id": "a06-q1",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "一个会产生副作用的流程（例如发布、部署），想让它只在你输入 /release 时运行，应设置？",
+    "options": ["user-invocable: false", "disable-model-invocation: true", "context: fork", "allowed-tools: none"],
+    "answer": 1,
+    "explanation": "disable-model-invocation: true: Claude can't invoke the skill on its own. Use this for workflows with side effects… 同时它的描述也不进上下文。",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q2",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "默认情况下（不设任何调用控制），skill 的什么内容常驻上下文？",
+    "options": ["完整 SKILL.md", "只有名称和描述，完整内容在调用时加载", "什么都不加载", "SKILL.md 和所有支持文件"],
+    "answer": 1,
+    "explanation": "(default): Description in context, full skill loads when invoked.",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q3",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "allowed-tools 授予的免批准权限持续多久？",
+    "options": ["整个会话", "调用该 skill 的这一轮；你发下一条消息时清除", "永久写入 settings", "直到压缩"],
+    "answer": 1,
+    "explanation": "allowed-tools: Tools Claude can use without asking permission during the turn that invokes this skill. The grant clears when you send your next message.",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q4",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "SKILL.md 里写 !`git diff HEAD` 的效果是？",
+    "options": ["让 Claude 自己决定要不要运行", "在内容发给 Claude 之前先运行命令，用输出替换这一行", "只是普通文本", "在 skill 结束后运行"],
+    "answer": 1,
+    "explanation": "The !`<command>` syntax runs shell commands before the skill content is sent to Claude. The command output replaces the placeholder.",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q5",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": ".claude/commands/deploy.md 和 .claude/skills/deploy/SKILL.md 同名时运行哪个？",
+    "options": ["commands 里的", "skill", "两个都运行", "报错"],
+    "answer": 1,
+    "explanation": "A skill and a file in .claude/commands/ → The skill. 自定义命令已并入 skills，旧的 commands 文件仍可用。",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  },
+  {
+    "id": "a06-q6",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "压缩后，调用过的 skill 正文会怎样？",
+    "options": ["全部丢失", "重新附加，每个保留前 5,000 tokens，总计 25,000 tokens", "只保留描述", "原样完整保留"],
+    "answer": 1,
+    "explanation": "Invoked skill bodies: Re-injected, capped at 5,000 tokens per skill and 25,000 tokens total; oldest dropped first. 所以最重要的指令放在 SKILL.md 开头。",
+    "source_url": "https://code.claude.com/docs/en/context-window.md"
+  },
+  {
+    "id": "a06-q7",
+    "chapter": "A6 Skills 与 slash commands",
+    "question": "你在项目里建了一个名为 steward 的 skill，会怎样？",
+    "options": ["覆盖内置 /steward", "在 /ship 可用的环境里仍运行内置的 /steward，你的不会作为命令加载", "两个都出现在菜单", "Claude Code 报错退出"],
+    "answer": 1,
+    "explanation": "A skill or command of yours named ship, ship-local, or steward → Where /ship is available, the bundled /ship or /steward. 但 .claude/skills/steward/SKILL.md 会被 watch 和 PR Steward 当作照看 PR 的说明读取。",
+    "source_url": "https://code.claude.com/docs/en/skills.md"
+  }
+]
