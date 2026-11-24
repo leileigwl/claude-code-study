@@ -1,0 +1,74 @@
+[
+  {
+    "id": "a02-q1",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "官方建议每个 CLAUDE.md 文件控制在多少行以内？",
+    "options": ["50 行", "200 行", "500 行", "没有建议"],
+    "answer": 1,
+    "explanation": "Size: target under 200 lines per CLAUDE.md file. Longer files consume more context and reduce adherence.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q2",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "在 foo/bar/ 启动 Claude Code，foo/CLAUDE.md 和 foo/bar/CLAUDE.md 的关系是？",
+    "options": ["foo/bar 的覆盖 foo 的", "只加载 foo/bar 的", "两者拼接，foo 的在前，foo/bar 的在后", "只加载 foo 的"],
+    "answer": 2,
+    "explanation": "All discovered files are concatenated into context rather than overriding each other… foo/CLAUDE.md appears in context before foo/bar/CLAUDE.md。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q3",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "用 @path 导入的文件会不会减少上下文占用？",
+    "options": ["会，导入的文件按需加载", "不会，导入的文件和引用它的 CLAUDE.md 一起加载", "只有绝对路径才会减少", "只有在 rules 目录里才会减少"],
+    "answer": 1,
+    "explanation": "Imports help you organize a long file but don't reduce its context cost, because imported files load together with the CLAUDE.md that imports them. 要按需加载，用带 paths 的 rules 或 skills。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q4",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": ".claude/rules/ 里的规则文件，frontmatter 中 Claude Code 唯一读取的字段是？",
+    "options": ["name", "description", "paths", "priority"],
+    "answer": 2,
+    "explanation": "paths is the only field Claude Code reads from a rule; any other field is ignored without an error.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q5",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "仓库里同时有 AGENTS.md 和 CLAUDE.md（默认设置），Claude 读哪个？",
+    "options": ["两个都读", "只读 AGENTS.md", "只读 CLAUDE.md", "随机"],
+    "answer": 2,
+    "explanation": "默认值 claude-md-or-agents-md：有 CLAUDE.md 或 CLAUDE.local.md 时只读 CLAUDE.md。要两者都读，把 Project instructions 设为 claude-md-and-agents-md，或在 CLAUDE.md 里写 @AGENTS.md。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q6",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "auto memory 存在哪里、会不会跨机器同步？",
+    "options": ["项目里的 .claude/memory/，随 git 同步", "~/.claude/projects/<project>/memory/，只在本机", "云端账户，所有设备同步", "CLAUDE.local.md"],
+    "answer": 1,
+    "explanation": "Each project gets its own memory directory at ~/.claude/projects/<project>/memory/… Auto memory is machine-local… Files are not shared across machines or cloud environments.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q7",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "想让 Claude“绝对不能”编辑某目录，下列哪种做法最可靠？",
+    "options": ["在 CLAUDE.md 里写 IMPORTANT: never edit", "在 auto memory 里记一条", "用 PreToolUse hook 或 permissions.deny 规则", "写进 CLAUDE.local.md"],
+    "answer": 2,
+    "explanation": "Claude treats CLAUDE.md files and auto memory as context. They aren't enforced configuration. To block an action regardless of what Claude decides, use a PreToolUse hook instead.",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  },
+  {
+    "id": "a02-q8",
+    "chapter": "A2 CLAUDE.md / 记忆 / .claude 目录",
+    "question": "CLAUDE.md 里的块级 HTML 注释（<!-- ... -->）会怎样？",
+    "options": ["原样进入上下文", "注入上下文前被去掉，不占 tokens", "导致文件解析失败", "被当作 @ 导入"],
+    "answer": 1,
+    "explanation": "Block-level HTML comments in CLAUDE.md files are stripped before the content is injected into Claude's context. 代码块里的注释会保留。",
+    "source_url": "https://code.claude.com/docs/en/memory.md"
+  }
+]

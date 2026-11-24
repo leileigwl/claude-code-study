@@ -1,0 +1,74 @@
+[
+  {
+    "id": "a03-q1",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "权限规则的评估顺序是？",
+    "options": ["allow → ask → deny", "deny → ask → allow，第一个命中的决定结果", "越具体的规则越优先", "按 settings 文件从低到高"],
+    "answer": 1,
+    "explanation": "Rules are evaluated in order: deny, then ask, then allow. The first match in that order determines the outcome, and rule specificity doesn't change the order.",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q2",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "用户设置里 allow 了某命令，项目设置里 deny 了同一命令，结果是？",
+    "options": ["用户设置优先，放行", "项目设置优先，但仍会弹窗", "被 deny 拦截", "取决于启动参数"],
+    "answer": 2,
+    "explanation": "If a tool is denied at any level, no other level can allow it… if user settings allow a permission and project settings deny it, the deny rule blocks it.",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q3",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "settings 的优先级从高到低是？",
+    "options": ["用户 > 项目 > 本地 > 托管", "托管 > 命令行 > 项目本地 > 共享项目 > 用户", "命令行 > 托管 > 用户 > 项目", "共享项目 > 项目本地 > 用户 > 托管"],
+    "answer": 1,
+    "explanation": "Settings precedence, highest first: managed settings, command line, project local, shared project, user. 列表类键（如 permissions.allow）会跨文件合并。",
+    "source_url": "https://code.claude.com/docs/en/settings.md"
+  },
+  {
+    "id": "a03-q4",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "deny 规则 Bash(git push *) 拦不住下面哪条命令？",
+    "options": ["git push origin main", "git push", "git -C . push origin main", "FOO=bar git push"],
+    "answer": 2,
+    "explanation": "官方表格：Bash(git push *) Doesn't stop git -C . push origin main 等改写形式。Bash 规则匹配命令文本，不是安全边界；要 OS 级限制用沙箱。deny 规则会越过前置变量赋值匹配。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q5",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "在 .claude/settings.json（项目设置）里写 \"defaultMode\": \"auto\" 会怎样？",
+    "options": ["所有人启动都进 auto", "不生效，Claude Code 使用内置默认值", "报错无法启动", "只对 VS Code 生效"],
+    "answer": 1,
+    "explanation": "If you set \"auto\" in .claude/settings.json or .claude/settings.local.json, the value doesn't take effect, and Claude Code then uses the built-in default… 写 bypassPermissions 也不生效、会以 Manual 启动。",
+    "source_url": "https://code.claude.com/docs/en/permission-modes.md"
+  },
+  {
+    "id": "a03-q6",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "开启沙箱后，下列哪个仍然不受沙箱约束？",
+    "options": ["Claude 运行的 npm test", "Claude 用 Read/Edit 工具读写文件", "Bash 命令启动的子进程", "PowerShell 命令"],
+    "answer": 1,
+    "explanation": "The sandbox covers shell commands only. Claude's file tools, MCP servers, and hooks run outside it. 内置文件工具受权限规则约束，不受 sandbox 约束。",
+    "source_url": "https://code.claude.com/docs/en/sandboxing.md"
+  },
+  {
+    "id": "a03-q7",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "项目 .claude/settings.json 里的 permissions.allow 规则什么时候生效？",
+    "options": ["立即生效", "你接受该文件夹的信任对话框之后", "只在 -p 模式生效", "需要重启电脑"],
+    "answer": 1,
+    "explanation": "permissions.allow rules and permissions.additionalDirectories entries in a project's .claude/settings.json grant capability, so Claude Code applies them only after you accept the workspace trust dialog. deny 规则立即生效。",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a03-q8",
+    "chapter": "A3 settings、权限模式与沙箱",
+    "question": "在 default（Manual）和 acceptEdits 模式下，Claude 写入 .husky/ 目录下的文件会？",
+    "options": ["直接写入", "弹窗询问（受保护路径）", "被静默拒绝", "交给分类器"],
+    "answer": 1,
+    "explanation": ".husky 在 Protected directories 列表里；default、acceptEdits 下受保护路径写入是 Prompted；auto 交给分类器，dontAsk 拒绝，bypassPermissions 允许。",
+    "source_url": "https://code.claude.com/docs/en/permission-modes.md"
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "a01-q1",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "官方把 Claude Code 的 agentic loop 分成哪三个阶段？",
+    "options": ["规划、编码、提交", "收集上下文、采取行动、验证结果", "读取、思考、回答", "探索、计划、执行"],
+    "answer": 1,
+    "explanation": "原文：it works through three phases: gather context, take action, and verify results. 三个阶段会交织在一起，并在需要时反复循环。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a01-q2",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "长会话里你早期在对话中口头交代的一条规则，压缩（compaction）之后最可能怎样？",
+    "options": ["被原样保留", "只以摘要的形式留下，细节可能丢失", "被自动写进 CLAUDE.md", "被转成 hook 继续强制执行"],
+    "answer": 1,
+    "explanation": "官方：摘要保留你的请求和关键代码片段，但 detailed instructions from early in the conversation may be lost。持久规则应写进 CLAUDE.md。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a01-q3",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "下列哪一项在压缩后会从磁盘重新注入（re-injected from disk）？",
+    "options": ["带 paths: 前缀的规则", "子目录中的 CLAUDE.md", "项目根目录的 CLAUDE.md 和不带 paths 的规则", "hooks 早先加进来的上下文"],
+    "answer": 2,
+    "explanation": "What survives compaction 表：Project-root CLAUDE.md and unscoped rules → Re-injected from disk；paths 规则和嵌套 CLAUDE.md 按需重新加载；hooks 早先加的上下文随对话一起被摘要。",
+    "source_url": "https://code.claude.com/docs/en/context-window.md"
+  },
+  {
+    "id": "a01-q4",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "压缩后 Claude Code 会自动重新读回最多几个最近修改过的文件？",
+    "options": ["1 个", "3 个", "5 个", "全部"],
+    "answer": 2,
+    "explanation": "Claude Code re-reads up to five of the files Claude has read or edited, choosing the ones modified most recently；超过 5,000 tokens 的文件只以路径引用（Referenced file）回来。",
+    "source_url": "https://code.claude.com/docs/en/context-window.md"
+  },
+  {
+    "id": "a01-q5",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "想控制压缩时保留什么，官方给的两种办法是？",
+    "options": ["在 CLAUDE.md 加 \"Compact Instructions\" 小节，或运行带重点的 /compact", "把 /clear 改名", "关闭 auto memory", "改用 bypassPermissions 模式"],
+    "answer": 0,
+    "explanation": "原文：add a \"Compact Instructions\" section to CLAUDE.md or run /compact with a focus (like /compact focus on the API changes)。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  },
+  {
+    "id": "a01-q6",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "看到 “Autocompact is thrashing” 报错，下列哪种做法不在官方给的恢复步骤里？",
+    "options": ["让 Claude 分块读取超大文件", "运行带重点的 /compact 丢掉大输出", "把大文件工作交给子代理", "把 autoCompactWindow 调到 0"],
+    "answer": 3,
+    "explanation": "官方恢复步骤：分块读、带重点 /compact、交给 subagent、不再需要旧对话就 /clear。没有“调到 0”这一条（/autocompact 命令和 --autocompact 参数只接受 100K tokens 及以上）。",
+    "source_url": "https://code.claude.com/docs/en/troubleshooting.md"
+  },
+  {
+    "id": "a01-q7",
+    "chapter": "A1 Agent 循环与上下文窗口",
+    "question": "Claude 正在运行工具时，你直接输入一句纠正并回车，会发生什么？",
+    "options": ["当前会话被清空", "消息排队，Claude 在当前工具调用结束后、同一轮内读到并调整", "必须等整轮结束才会读到", "消息被丢弃"],
+    "answer": 1,
+    "explanation": "原文：The message shows as queued... it reads the message as soon as those calls finish, within the same turn, and adjusts before its next step。按 Esc 则会立即停止并取消正在运行的工具调用。",
+    "source_url": "https://code.claude.com/docs/en/how-claude-code-works.md"
+  }
+]
