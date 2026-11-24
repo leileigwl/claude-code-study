@@ -1,0 +1,65 @@
+[
+  {
+    "id": "a08-q1",
+    "chapter": "A8 MCP 接入",
+    "question": "claude mcp add 不带 --scope 时，服务器默认存在哪个范围？",
+    "options": ["project（.mcp.json）", "user（所有项目）", "local（~/.claude.json 中该项目条目，仅你可用）", "managed"],
+    "answer": 2,
+    "explanation": "By default it registers the server at local scope: private to you, active only in the current project. 存在 ~/.claude.json 该项目的条目下。",
+    "source_url": "https://code.claude.com/docs/en/mcp-quickstart.md"
+  },
+  {
+    "id": "a08-q2",
+    "chapter": "A8 MCP 接入",
+    "question": "想把一个 MCP 服务器分享给克隆仓库的所有人，应该？",
+    "options": ["--scope user", "--scope project，写入 .mcp.json 并提交", "写进 CLAUDE.md", "放进 settings.local.json"],
+    "answer": 1,
+    "explanation": "Re-add the server at project scope, which writes to .mcp.json in the project root… Teammates who clone the repository… see a prompt to approve the server.",
+    "source_url": "https://code.claude.com/docs/en/mcp-quickstart.md"
+  },
+  {
+    "id": "a08-q3",
+    "chapter": "A8 MCP 接入",
+    "question": "同名服务器同时定义在 local、project、user 三个范围，用哪个？",
+    "options": ["user", "project", "local", "合并三者字段"],
+    "answer": 2,
+    "explanation": "优先级：Local > Project > User > 插件 > claude.ai connectors；使用最高来源的完整条目，字段不跨范围合并。",
+    "source_url": "https://code.claude.com/docs/en/mcp.md"
+  },
+  {
+    "id": "a08-q4",
+    "chapter": "A8 MCP 接入",
+    "question": "开启 tool search（默认）时，MCP 服务器在会话开始时占用上下文的是？",
+    "options": ["所有工具的完整定义", "只有工具名和服务器说明", "什么都不占", "服务器的源代码"],
+    "answer": 1,
+    "explanation": "Only tool names and server instructions load at session start, so adding more MCP servers has minimal impact on your context window.",
+    "source_url": "https://code.claude.com/docs/en/mcp.md"
+  },
+  {
+    "id": "a08-q5",
+    "chapter": "A8 MCP 接入",
+    "question": "允许 github 服务器的所有工具，权限规则怎么写？",
+    "options": ["Mcp(github)", "mcp__github__*", "github:*", "Bash(gh *)"],
+    "answer": 1,
+    "explanation": "To match every tool from an MCP server, write mcp__<server>__*. To match one tool, write its full name, mcp__<server>__<tool>.",
+    "source_url": "https://code.claude.com/docs/en/permissions.md"
+  },
+  {
+    "id": "a08-q6",
+    "chapter": "A8 MCP 接入",
+    "question": ".mcp.json 里要放 API key，官方推荐的做法是？",
+    "options": ["明文写进去提交", "用 ${VAR} 或 ${VAR:-default} 引用环境变量", "写进 CLAUDE.md", "放在 README"],
+    "answer": 1,
+    "explanation": "Claude Code supports environment variable expansion in .mcp.json files… ${VAR} / ${VAR:-default}，可用于 command、args、env、url、headers。",
+    "source_url": "https://code.claude.com/docs/en/mcp.md"
+  },
+  {
+    "id": "a08-q7",
+    "chapter": "A8 MCP 接入",
+    "question": "对于已有命令行工具（如 gh）的系统，官方最佳实践更推荐？",
+    "options": ["一定要用 MCP", "通常用 CLI 最简单；没有 CLI 的系统再用 MCP", "两者都不用", "用 WebFetch"],
+    "answer": 1,
+    "explanation": "If that system has a CLI, that's usually the easiest way in… For systems without a CLI, there's MCP.",
+    "source_url": "https://code.claude.com/docs/en/best-practices.md"
+  }
+]
